@@ -15,7 +15,7 @@ public class RatesResponseAsserter extends Asserter {
 
     public AssertCondition<RatesResponse> hasCurrencyPairs(int value) {
         return buildCondition(
-                String.format("Should have %s currency pairs"),
+                String.format("Should have %s currency pairs", value),
                 (response) -> response.getRates().entrySet().size() == value,
                 RatesResponse.class
         );

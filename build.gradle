@@ -19,13 +19,7 @@ dependencies {
     implementation 'net.serenity-bdd:serenity-junit5:4.1.4'
     implementation 'net.serenity-bdd:serenity-reports:4.1.4'
     implementation 'net.serenity-bdd:serenity-screenplay-rest:4.1.4'
-    implementation 'io.rest-assured:rest-assured:5.4.0'
     implementation "net.serenity-bdd:serenity-ensure:4.1.4"
-
-
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.10.1'
