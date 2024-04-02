@@ -16,8 +16,8 @@ Key components of the framework include:
 
 ## Steps to run the test
 
-git clone https://github.com/your/repository.git
+git clone git@github.com:codelover2605/serenity-screenplay-api-tests.git
 
-cd project-directory
+cd serenity-screenplay-api-tests
 
 ./gradlew test
