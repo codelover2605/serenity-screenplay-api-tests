@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+}
+
+group 'org.testvagrant'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    // Serenity
+    implementation 'net.serenity-bdd:serenity-screenplay:4.1.4'
+    implementation 'net.serenity-bdd:serenity-core:4.1.4'
+    testImplementation 'net.serenity-bdd:serenity-junit5:4.1.4'
+    implementation 'net.serenity-bdd:serenity-reports:4.1.4'
+
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+
+test {
+
+}
+
+tasks.withType(Test) {
+    systemProperty 'listener', 'net.serenitybdd.junit5.SerenityRunner'
+}
+
