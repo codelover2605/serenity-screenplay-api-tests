@@ -1,46 +1,51 @@
 package clients;
 
-import models.ResponseWrapper;
-import net.serenitybdd.screenplay.Actor;
+import models.AssertCondition;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.serenitybdd.rest.SerenityRest;
+import net.serenitybdd.screenplay.*;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
+import static net.serenitybdd.screenplay.rest.questions.ResponseConsequence.seeThatResponse;
+import static org.hamcrest.Matchers.lessThan;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ActorClient<T> {
 
     private Actor actor;
+    private Gson gson;
+    private Class<T> responseType;
 
     public ActorClient(Actor actor) {
         this.actor = actor;
+        this.gson = new GsonBuilder().create();
     }
 
-    public ActorClient<T> performs(Supplier<ResponseWrapper<T>> task) {
-        ResponseWrapper<T> response = task.get();
-        actor.remember("response", response);
+    public ActorClient<T> performs(Supplier<Task> task) {
+        actor.attemptsTo(task.get());
         return this;
     }
 
-    public ActorClient<T> shouldSeeThat(AssertCondition assertCOndition) {
-        ResponseWrapper<T> response = actor.recall("response");
-        actor.should(seeThat(assertCOndition.getMessage(), actual -> assertCOndition.getPredicate().test(response)));
+    public ActorClient<T> shouldSeeThat(AssertCondition<T> assertCondition) {
+        String jsonResponse = SerenityRest.lastResponse().getBody().asPrettyString();
+        T response = gson.fromJson(jsonResponse, assertCondition.getClazz());
+        actor.should(seeThat(assertCondition.getMessage(), x -> assertCondition.getPredicate().test(response)));
         return this;
     }
 
     public ActorClient<T> statusCodeShouldBe(int expectedCode) {
-        ResponseWrapper<T> response = actor.recall("response");
-        int statusCode = response.getStatusCode();
-        actor.should(seeThat(String.format("Status expectedCode should be %s but was %s",
-                expectedCode, statusCode), result -> statusCode == expectedCode));
+        actor.should(seeThatResponse("Status code should be as expected",
+                response -> response.statusCode(expectedCode)));
         return this;
     }
 
     public ActorClient<T> responseTimeShouldBeWithInSecs(long expectedSeconds) {
-        ResponseWrapper<T> response = actor.recall("response");
-        long responseTime = response.getResponseTime();
-        actor.should(seeThat(String.format("Response time should be within %s but was %s",
-                expectedSeconds, responseTime / 1000), result -> responseTime < expectedSeconds * 1000));
+        actor.should(seeThatResponse("Response time should be within %s but was %s",
+                response -> response.time(lessThan(expectedSeconds), TimeUnit.SECONDS)));
         return this;
     }
 }

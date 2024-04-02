@@ -1,8 +1,7 @@
-package clients;
+package models;
 
 import lombok.Builder;
 import lombok.Data;
-import models.ResponseWrapper;
 
 import java.util.function.Predicate;
 
@@ -10,5 +9,7 @@ import java.util.function.Predicate;
 @Builder
 public class AssertCondition<T> {
     private String message;
-    private Predicate<ResponseWrapper<T>> predicate;
+    private String failureMessage;
+    private Predicate<T> predicate;
+    private Class<T> clazz;
 }

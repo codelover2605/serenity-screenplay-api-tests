@@ -16,8 +16,11 @@ dependencies {
     // Serenity
     implementation 'net.serenity-bdd:serenity-screenplay:4.1.4'
     implementation 'net.serenity-bdd:serenity-core:4.1.4'
-    testImplementation 'net.serenity-bdd:serenity-junit5:4.1.4'
+    implementation 'net.serenity-bdd:serenity-junit5:4.1.4'
     implementation 'net.serenity-bdd:serenity-reports:4.1.4'
+    implementation 'net.serenity-bdd:serenity-screenplay-rest:4.1.4'
+    implementation 'io.rest-assured:rest-assured:5.4.0'
+    implementation "net.serenity-bdd:serenity-ensure:4.1.4"
 
 
     // Retrofit
@@ -36,10 +39,8 @@ dependencies {
 
 
 test {
-
-}
-
-tasks.withType(Test) {
-    systemProperty 'listener', 'net.serenitybdd.junit5.SerenityRunner'
+    useJUnitPlatform()
+    systemProperty('listener', 'net.serenitybdd.junit5.SerenityRunner')
+    environment('baseurl', 'https://open.er-api.com/v6/')
 }
 

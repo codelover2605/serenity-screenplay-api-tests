@@ -1,10 +1,10 @@
-package tests;
+package clients;
 
-import clients.ActorClient;
 import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 
 public class APITest {
-    public static <T> T client(Class<T> clazz) {
+    public static <T> T createInstance(Class<T> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {
@@ -12,8 +12,9 @@ public class APITest {
         }
     }
 
-    public <T> ActorClient<T> rateChecker(Class<T> clazz) {
-        Actor actor = Actor.named("USD Rate Checker");
+    public <T> ActorClient<T> actorClient() {
+        Actor actor = Actor.named("USD Rate Checker")
+                .whoCan(CallAnApi.at(System.getenv("baseurl")));
         return new ActorClient<T>(actor);
     }
 }
