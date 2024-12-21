@@ -16,8 +16,10 @@ Key components of the framework include:
 
 ## Steps to run the test
 
+```
 git clone git@github.com:codelover2605/serenity-screenplay-api-tests.git
 
 cd serenity-screenplay-api-tests
 
 ./gradlew test
+```
